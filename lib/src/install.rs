@@ -1504,11 +1504,12 @@ fn setup_composefs_boot(root_setup: &RootSetup, state: &State, image_id: &str) -
         None => anyhow::bail!("Expected rootfs to have a UUID by now"),
     };
 
-    let cmdline_refs = [
-        "console=ttyS0,115200",
-        &format!("root=UUID={rootfs_uuid}"),
-        "rw",
-    ];
+    let cmdline_refs = [];
+    // let cmdline_refs = [
+    //     "console=ttyS0,115200",
+    //     &format!("root=UUID={rootfs_uuid}"),
+    //     "rw",
+    // ];
 
     let boot_dir = root_setup.physical_root_path.join("boot");
     create_dir_all(&boot_dir).context("Failed to create boot dir")?;
@@ -1528,11 +1529,11 @@ fn setup_composefs_boot(root_setup: &RootSetup, state: &State, image_id: &str) -
     // via the boot entries above
     let grub_user_config = format!(
         r#"
-menuentry "Some Fedora" {{
+menuentry "Fedora Bootc UKI" {{
     insmod fat
     insmod chain
     search --no-floppy --set=root --fs-uuid {rootfs_uuid}
-    chainloader /boot/EFI/Linux/uki.efi
+    chainloader /boot/EFI/Linux/6.14.9-300.fc42.x86_64.efi
 }}
 "#
     );
