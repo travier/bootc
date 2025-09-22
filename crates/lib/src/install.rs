@@ -238,6 +238,13 @@ pub(crate) struct InstallComposefsOpts {
     #[clap(long, default_value_t)]
     #[serde(default)]
     pub(crate) bootloader: Bootloader,
+
+    /// Name of the UKI addons to install without the ".efi.addon" suffix.
+    /// This option can be provided multiple times if multiple addons are to be installed.
+    /// If not passed, all addons are installed
+    #[clap(long)]
+    #[serde(default)]
+    pub(crate) uki_addon: Option<Vec<String>>,
 }
 
 #[cfg(feature = "install-to-disk")]
