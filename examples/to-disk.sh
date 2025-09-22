@@ -5,13 +5,6 @@ set -euxo pipefail
 IMAGE="${IMAGE:-quay.io/fedora/fedora-bootc-bls:42}"
 DISKIMAGE="${DISKIMAGE:-test-disk.img}"
 
-bootc_project="/srv/bootc"
-
-if [[ "$PWD" != "$bootc_project/examples" ]]; then
-    echo "Run this command from $bootc_project/examples"
-    exit 1
-fi
-
 if [[ ! -f systemd-bootx64.efi ]]; then
     echo "Needs /srv/bootc/examples/systemd-bootx64.efi to exists for now"
     exit 1
@@ -23,7 +16,6 @@ losetup --detach-all || true
 rm -rf "${DISKIMAGE}"
 truncate -s 15G "${DISKIMAGE}"
 
-#    --env RUST_BACKTRACE=1 \
 # -v /srv/bootc/target/release/bootc:/usr/bin/bootc:ro,Z \
 podman run \
     --rm --privileged \
@@ -32,6 +24,7 @@ podman run \
     -v /var/lib/containers:/var/lib/containers \
     -v /var/tmp:/var/tmp \
     -v $PWD:/output \
+    --env RUST_BACKTRACE=1 \
     --env RUST_LOG=debug \
     --security-opt label=type:unconfined_t \
     "${IMAGE}" \

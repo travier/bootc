@@ -5,13 +5,6 @@ set -euxo pipefail
 IMAGE="${IMAGE:-quay.io/fedora/fedora-bootc-bls:42}"
 DISKIMAGE="${DISKIMAGE:-test-filesystem-bls.img}"
 
-bootc_project="/srv/bootc"
-
-if [[ "$PWD" != "$bootc_project/examples" ]]; then
-    echo "Run this command from $bootc_project/examples"
-    exit 1
-fi
-
 umount -R ./mnt || true
 losetup --detach-all || true
 
